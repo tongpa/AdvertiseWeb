@@ -5,24 +5,21 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
-	
 
-	
+	<http />
+    <!-- enable use-expressions -->
 	<http auto-config="true" use-expressions="true">
-		<intercept-url pattern="/login" access="isAnonymous()" />
-		<intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
+		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
+		
+		<!-- access denied page -->
 		<access-denied-handler error-page="/403" />
-		   <form-login 
+		<form-login 
 		    login-page="/login" 
 		    default-target-url="/welcome" 
 			authentication-failure-url="/login?error" 
 			/>
-		<logout 
-			invalidate-session="true" 
-			logout-success-url="/login?logout" 
-			logout-url="/login?logout"  
-			delete-cookies="JSESSIONID"/>
-		
+		<logout logout-success-url="/login?logout"  />
+		<!-- enable csrf protection -->
 		<csrf/>
 	</http>
 	
@@ -36,15 +33,5 @@
 					"select username, role from user_roles where username =?  " />
 		</authentication-provider>
 	</authentication-manager>
-	
-	<!-- Select user and user_roles from xml
-	<authentication-manager>
-	  <authentication-provider>
-	    <user-service>
-		<user name="tong" password="123456" authorities="ROLE_ADMIN" />
-		<user name="tang" password="123456" authorities="ROLE_USER" />
-	    </user-service>
-	  </authentication-provider>
-	</authentication-manager>
-	 -->
+
 </beans:beans>
